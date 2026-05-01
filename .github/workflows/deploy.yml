@@ -35,12 +35,50 @@ jobs:
           port: ${{ secrets.SSH_PORT || 22 }}
           script: |
             set -e
+            DEPLOY_PATH="${{ secrets.DEPLOY_PATH }}"
+            SITE_NAME="sem-student-site"
+
             if command -v apt-get >/dev/null 2>&1; then
               sudo apt-get update
               sudo apt-get install -y nginx rsync
             fi
-            sudo mkdir -p "${{ secrets.DEPLOY_PATH }}"
-            sudo chown -R "${USER}:${USER}" "${{ secrets.DEPLOY_PATH }}"
+
+            sudo mkdir -p "$DEPLOY_PATH"
+            sudo chown -R "${USER}:${USER}" "$DEPLOY_PATH"
+
+            if [ -d /etc/nginx/sites-available ] && [ -d /etc/nginx/sites-enabled ]; then
+              sudo tee "/etc/nginx/sites-available/$SITE_NAME" >/dev/null <<EOF
+            server {
+                listen 80 default_server;
+                listen [::]:80 default_server;
+                server_name _;
+
+                root $DEPLOY_PATH;
+                index index.html;
+
+                location / {
+                    try_files \$uri \$uri/ /index.html;
+                }
+            }
+            EOF
+              sudo rm -f /etc/nginx/sites-enabled/default
+              sudo ln -sf "/etc/nginx/sites-available/$SITE_NAME" "/etc/nginx/sites-enabled/$SITE_NAME"
+            else
+              sudo tee "/etc/nginx/conf.d/$SITE_NAME.conf" >/dev/null <<EOF
+            server {
+                listen 80 default_server;
+                listen [::]:80 default_server;
+                server_name _;
+
+                root $DEPLOY_PATH;
+                index index.html;
+
+                location / {
+                    try_files \$uri \$uri/ /index.html;
+                }
+            }
+            EOF
+            fi
 
       - name: Upload dist to VPS
         uses: easingthemes/ssh-deploy@v5.1.0
