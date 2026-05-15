@@ -1,5 +1,6 @@
 import {
   BookOpen,
+  BookText,
   CalendarDays,
   CheckSquare,
   CircleHelp,
@@ -45,6 +46,12 @@ const sections = [
     slug: "rules-support",
     icon: ShieldCheck,
     links: ["Правила поведения", "Плагиат", "Психологическая помощь"],
+  },
+  {
+    title: "7. Глоссарий",
+    slug: "glossary",
+    icon: BookText,
+    links: ["Термины на китайском", "Термины на английском", "Документы и сервисы"],
   },
 ];
 

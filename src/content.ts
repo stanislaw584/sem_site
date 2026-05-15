@@ -30,6 +30,7 @@ const categoryOrder = [
   "opportunities",
   "rules",
   "about",
+  "glossary",
 ];
 
 function parseFrontmatter(raw: string) {

@@ -15,7 +15,7 @@ export function Layout({ children }: LayoutProps) {
         <nav className="top-nav" aria-label="Основная навигация">
           <NavLink to="/">Главная</NavLink>
           <NavLink to="/search">Поиск</NavLink>
-          <a href="#contacts">Контакты</a>
+          <NavLink to="/ask">Задать вопрос</NavLink>
           <span className="language-switcher" aria-label="Языки">
             RU / EN / 中文
           </span>
