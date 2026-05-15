@@ -1,6 +1,7 @@
 import { ArrowLeft } from "lucide-react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { getArticle } from "../content";
+import { NotFoundPage } from "./NotFoundPage";
 
 export function ArticlePage() {
   const { slug = "" } = useParams();
@@ -11,7 +12,7 @@ export function ArticlePage() {
   }
 
   if (!article) {
-    return <Navigate to="/404" replace />;
+    return <NotFoundPage />;
   }
 
   document.title = `${article.title} | SEM Student Guide`;

@@ -306,6 +306,12 @@ h1 {
   background: var(--soft);
 }
 
+/* Ensure CJK column in glossary tables is readable */
+.article-content td:last-child,
+.article-content th:last-child {
+  min-width: 60px;
+}
+
 .article-content code {
   padding: 2px 6px;
   border-radius: 4px;
