@@ -83,6 +83,36 @@ function stripMarkdown(markdown: string) {
     .trim();
 }
 
+function wrapSections(html: string) {
+  const sections = html.split(/(<h2>.*?<\/h2>)/g);
+
+  if (sections.length < 3) {
+    return html;
+  }
+
+  let wrapped = sections[0];
+  let sectionNumber = 0;
+
+  for (let index = 1; index < sections.length; index += 2) {
+    const heading = sections[index];
+    const content = sections[index + 1] ?? "";
+    const title = heading.replace(/^<h2>|<\/h2>$/g, "");
+    const preview =
+      content
+        .replace(/<table[\s\S]*?<\/table>/g, " ")
+        .replace(/<[^>]+>/g, " ")
+        .replace(/\s+/g, " ")
+        .trim()
+        .slice(0, 150) || "Коротко о том, что важно сделать и где проверить информацию.";
+    const open = sectionNumber === 0 ? " open" : "";
+
+    wrapped += `<details class="article-section"${open}><summary>${title}</summary><div class="article-section-body"><p class="section-context">${preview}${preview.length >= 150 ? "..." : ""}</p>${content}</div></details>`;
+    sectionNumber += 1;
+  }
+
+  return wrapped;
+}
+
 export const articles: Article[] = Object.entries(modules)
   .map(([path, raw]) => {
     const parsed = parseFrontmatter(String(raw));
@@ -95,7 +125,7 @@ export const articles: Article[] = Object.entries(modules)
       title: meta.title || slug,
       summary: meta.summary || "",
       slug,
-      html: marked.parse(parsed.content, { async: false }) as string,
+      html: wrapSections(marked.parse(parsed.content, { async: false }) as string),
       body: stripMarkdown(parsed.content),
     };
   })

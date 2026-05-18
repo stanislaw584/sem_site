@@ -16,6 +16,9 @@ export function Layout({ children }: LayoutProps) {
           <NavLink to="/">Главная</NavLink>
           <NavLink to="/search">Поиск</NavLink>
           <a href="#contacts">Контакты</a>
+          <Link className="header-question-link" to="/#ask-question">
+            Задать вопрос
+          </Link>
           <span className="language-switcher" aria-label="Языки">
             RU / EN / 中文
           </span>
@@ -46,4 +49,3 @@ export function Layout({ children }: LayoutProps) {
     </div>
   );
 }
-

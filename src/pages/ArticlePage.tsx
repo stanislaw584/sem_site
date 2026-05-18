@@ -1,5 +1,6 @@
 import { ArrowLeft } from "lucide-react";
 import { Link, Navigate, useParams } from "react-router-dom";
+import { PageVisual } from "../components/PageVisual";
 import { getArticle } from "../content";
 
 export function ArticlePage() {
@@ -27,6 +28,7 @@ export function ArticlePage() {
         <h1>{article.title}</h1>
         {article.summary ? <p>{article.summary}</p> : null}
       </div>
+      <PageVisual slug={article.slug} />
       <div className="article-layout">
         <div
           className="article-content"
@@ -53,4 +55,3 @@ export function ArticlePage() {
     </article>
   );
 }
-

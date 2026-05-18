@@ -7,6 +7,8 @@ import {
   Star,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { PageVisual } from "../components/PageVisual";
+import { QuestionForm } from "../components/QuestionForm";
 import { SearchBox } from "../components/SearchBox";
 
 const sections = [
@@ -52,13 +54,16 @@ export function HomePage() {
   return (
     <section className="home-page" data-pagefind-body>
       <div className="hero">
-        <p className="eyebrow">Школа экономики и менеджмента ДВФУ</p>
-        <h1>Гид для иностранных студентов ШЭМ</h1>
-        <p>
-          Простая навигация по учебе, сервисам, контактам и возможностям. Выберите раздел или
-          найдите нужную тему через поиск.
-        </p>
-        <SearchBox />
+        <div>
+          <p className="eyebrow">Школа экономики и менеджмента ДВФУ</p>
+          <h1>Гид для иностранных студентов ШЭМ</h1>
+          <p>
+            Простая навигация по учебе, сервисам, контактам и возможностям. Выберите раздел или
+            найдите нужную тему через поиск.
+          </p>
+          <SearchBox />
+        </div>
+        <PageVisual slug="home" compact />
       </div>
 
       <div className="section-grid" aria-label="Разделы сайта">
@@ -81,7 +86,7 @@ export function HomePage() {
           );
         })}
       </div>
+      <QuestionForm />
     </section>
   );
 }
-

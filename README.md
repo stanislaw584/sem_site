@@ -178,10 +178,29 @@ sudo chown -R deploy:deploy /var/www/sem-student-guide
 
 ### Что CI не настраивает автоматически
 
-Workflow автоматически создает базовый Nginx server block для открытия сайта по IP и по домену `dvfu-students.ru`, когда DNS начнет указывать на VPS. Он использует такой `server_name`:
+Workflow автоматически создает Nginx server block только для домена `dvfu-students.ru`. Запросы по IP попадают в отдельный default block и не открывают сайт.
 
 ```nginx
-server_name _ dvfu-students.ru www.dvfu-students.ru;
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    server_name _;
+
+    return 444;
+}
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name dvfu-students.ru www.dvfu-students.ru;
+
+    root /var/www/sem-student-site;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+}
 ```
 
 Путь берется из секрета `DEPLOY_PATH`, например:
@@ -190,9 +209,7 @@ server_name _ dvfu-students.ru www.dvfu-students.ru;
 /var/www/sem-student-site
 ```
 
-После успешного деплоя сайт должен открываться по IP сервера. Когда домен активируется и A-запись будет указывать на IP VPS, тот же сайт начнет открываться по домену.
-
-Когда появится домен, Nginx-конфиг можно заменить на доменный вариант и добавить SSL.
+После успешного деплоя сайт должен открываться по домену, если A-запись `dvfu-students.ru` указывает на IP VPS. По прямому IP Nginx будет закрывать соединение.
 
 Nginx-конфиг ниже нужен как пример для ручной доменной настройки.
 

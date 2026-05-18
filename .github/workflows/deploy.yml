@@ -51,7 +51,15 @@ jobs:
             server {
                 listen 80 default_server;
                 listen [::]:80 default_server;
-                server_name _ dvfu-students.ru www.dvfu-students.ru;
+                server_name _;
+
+                return 444;
+            }
+
+            server {
+                listen 80;
+                listen [::]:80;
+                server_name dvfu-students.ru www.dvfu-students.ru;
 
                 root $DEPLOY_PATH;
                 index index.html;
@@ -68,7 +76,15 @@ jobs:
             server {
                 listen 80 default_server;
                 listen [::]:80 default_server;
-                server_name _ dvfu-students.ru www.dvfu-students.ru;
+                server_name _;
+
+                return 444;
+            }
+
+            server {
+                listen 80;
+                listen [::]:80;
+                server_name dvfu-students.ru www.dvfu-students.ru;
 
                 root $DEPLOY_PATH;
                 index index.html;
