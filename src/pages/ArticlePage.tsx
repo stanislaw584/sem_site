@@ -2,10 +2,12 @@ import { ArrowLeft } from "lucide-react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { PageVisual } from "../components/PageVisual";
 import { getArticle } from "../content";
+import { useLang } from "../i18n";
 import { NotFoundPage } from "./NotFoundPage";
 
 export function ArticlePage() {
   const { slug = "" } = useParams();
+  const { t } = useLang();
   const article = getArticle(slug);
 
   if (slug === "index") {
@@ -22,7 +24,7 @@ export function ArticlePage() {
     <article className="article-page" data-pagefind-body>
       <Link className="back-link" to="/">
         <ArrowLeft size={18} aria-hidden="true" />
-        На главную
+        {t.backToHome}
       </Link>
       <div className="article-header">
         <p className="eyebrow">{article.source}</p>
@@ -33,18 +35,23 @@ export function ArticlePage() {
       <div className="article-layout">
         <div
           className="article-content"
+          // content is generated from project markdown files, not user input
           dangerouslySetInnerHTML={{ __html: article.html }}
         />
         <aside className="article-aside" aria-label="Информация о странице">
-          <h2>Страница</h2>
-          {article.lastReviewed ? <p>Проверить актуальность: {article.lastReviewed}</p> : null}
+          <h2>{t.page}</h2>
+          {article.lastReviewed ? (
+            <p>
+              {t.checkRelevance}: {article.lastReviewed}
+            </p>
+          ) : null}
           {article.related?.length ? (
             <>
-              <h2>Связанные разделы</h2>
-              {article.related.map((slug) => {
-                const related = getArticle(slug);
+              <h2>{t.relatedSections}</h2>
+              {article.related.map((relSlug) => {
+                const related = getArticle(relSlug);
                 return related ? (
-                  <Link key={slug} to={`/${related.slug}`}>
+                  <Link key={relSlug} to={`/${related.slug}`}>
                     {related.title}
                   </Link>
                 ) : null;

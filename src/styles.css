@@ -103,8 +103,37 @@ textarea {
 }
 
 .language-switcher {
-  color: var(--blue);
+  display: flex;
+  align-items: center;
+  gap: 2px;
   white-space: nowrap;
+}
+
+.lang-btn {
+  background: none;
+  border: 0;
+  padding: 3px 5px;
+  border-radius: 4px;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.lang-btn:hover {
+  color: var(--text);
+}
+
+.lang-btn-active {
+  color: var(--blue);
+  font-weight: 800;
+}
+
+.lang-sep {
+  color: var(--line);
+  font-size: 13px;
+  user-select: none;
 }
 
 main {
@@ -175,6 +204,7 @@ h1 {
   border: 0;
   outline: 0;
   color: var(--text);
+  text-overflow: ellipsis;
 }
 
 .search-box button,
@@ -245,17 +275,21 @@ h1 {
   list-style: none;
   margin: 0;
   padding: 0;
-  color: var(--blue);
+  color: var(--muted);
 }
 
 .section-card li {
-  margin: 8px 0;
+  margin: 7px 0;
+  font-size: 15px;
 }
 
 .section-card li::before {
-  content: "›";
-  margin-right: 10px;
-  color: #7a8796;
+  content: "·";
+  margin-right: 8px;
+  color: #b0bac8;
+  font-size: 18px;
+  line-height: 1;
+  vertical-align: middle;
 }
 
 .page-visual {

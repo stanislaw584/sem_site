@@ -4,9 +4,15 @@ import { useNavigate } from "react-router-dom";
 
 type SearchBoxProps = {
   initialValue?: string;
+  placeholder?: string;
+  searchButton?: string;
 };
 
-export function SearchBox({ initialValue = "" }: SearchBoxProps) {
+export function SearchBox({
+  initialValue = "",
+  placeholder = "Например: расписание, сессия, виза, общежитие",
+  searchButton = "Поиск",
+}: SearchBoxProps) {
   const [query, setQuery] = useState(initialValue);
   const navigate = useNavigate();
 
@@ -21,17 +27,16 @@ export function SearchBox({ initialValue = "" }: SearchBoxProps) {
   return (
     <form className="search-box" onSubmit={submit}>
       <label className="visually-hidden" htmlFor="site-search">
-        Поиск по сайту
+        {placeholder}
       </label>
       <Search aria-hidden="true" size={22} />
       <input
         id="site-search"
         value={query}
         onChange={(event) => setQuery(event.target.value)}
-        placeholder="Например: расписание, сессия, виза, общежитие"
+        placeholder={placeholder}
       />
-      <button type="submit">Поиск</button>
+      <button type="submit">{searchButton}</button>
     </form>
   );
 }
-

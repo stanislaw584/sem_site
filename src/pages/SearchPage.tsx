@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { SearchBox } from "../components/SearchBox";
 import { Article, searchLocal } from "../content";
+import { useLang } from "../i18n";
 
 type PagefindResult = {
   data: () => Promise<{
@@ -21,6 +22,7 @@ type SearchResult = {
   excerpt: string;
 };
 
+// Dynamic import used to avoid bundler resolving pagefind at build time
 const importPagefind = new Function("return import('/pagefind/pagefind.js')") as () => Promise<PagefindModule>;
 
 function normalizePagefindUrl(url: string) {
@@ -39,6 +41,7 @@ function articleToResult(article: Article): SearchResult {
 export function SearchPage() {
   const [params] = useSearchParams();
   const query = params.get("q") || "";
+  const { t } = useLang();
   const [pagefindResults, setPagefindResults] = useState<SearchResult[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -64,7 +67,7 @@ export function SearchPage() {
         if (!cancelled) {
           setPagefindResults(
             loaded.map((item) => ({
-              title: item.meta.title || "Страница",
+              title: item.meta.title || t.pageFallbackTitle,
               url: normalizePagefindUrl(item.url),
               excerpt: item.excerpt,
             })),
@@ -86,30 +89,27 @@ export function SearchPage() {
     return () => {
       cancelled = true;
     };
-  }, [query]);
+  }, [query, t]);
 
   const results = pagefindResults ?? fallbackResults;
 
   return (
     <section className="search-page">
       <div className="page-heading">
-        <p className="eyebrow">Поиск</p>
-        <h1>Поиск по гиду</h1>
-        <p>
-          В собранной версии используется Pagefind. В режиме разработки работает простой локальный
-          поиск по заголовкам и текстам.
-        </p>
-        <SearchBox initialValue={query} />
+        <p className="eyebrow">{t.nav.search}</p>
+        <h1>{t.searchHeading}</h1>
+        <p>{t.searchDesc}</p>
+        <SearchBox
+          initialValue={query}
+          placeholder={t.searchPlaceholder}
+          searchButton={t.searchButton}
+        />
       </div>
 
       {query ? (
         <div className="search-results">
-          <h2>
-            {isLoading ? "Ищу..." : `Результаты по запросу "${query}"`}
-          </h2>
-          {!isLoading && results.length === 0 ? (
-            <p>Ничего не найдено. Попробуйте другой запрос: например, "почта", "оценки", "виза".</p>
-          ) : null}
+          <h2>{isLoading ? t.searching : t.resultsFor(query)}</h2>
+          {!isLoading && results.length === 0 ? <p>{t.noResults}</p> : null}
           {results.map((result) => (
             <Link className="result-card" to={result.url} key={`${result.url}-${result.title}`}>
               <h3>{result.title}</h3>
@@ -118,7 +118,7 @@ export function SearchPage() {
           ))}
         </div>
       ) : (
-        <p className="empty-search">Введите запрос, чтобы найти нужную тему.</p>
+        <p className="empty-search">{t.emptySearch}</p>
       )}
     </section>
   );
