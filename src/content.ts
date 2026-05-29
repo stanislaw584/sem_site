@@ -98,16 +98,23 @@ function wrapSections(html: string) {
     const heading = sections[index];
     const content = sections[index + 1] ?? "";
     const title = heading.replace(/^<h2>|<\/h2>$/g, "");
-    const preview =
+    const PREVIEW_LIMIT = 220;
+    const rawText =
       content
         .replace(/<table[\s\S]*?<\/table>/g, " ")
         .replace(/<[^>]+>/g, " ")
         .replace(/\s+/g, " ")
-        .trim()
-        .slice(0, 150) || "Коротко о том, что важно сделать и где проверить информацию.";
+        .trim() || "Коротко о том, что важно сделать и где проверить информацию.";
+    let preview = rawText;
+    let truncated = false;
+    if (rawText.length > PREVIEW_LIMIT) {
+      const wordBoundary = rawText.lastIndexOf(" ", PREVIEW_LIMIT);
+      preview = rawText.slice(0, wordBoundary > 0 ? wordBoundary : PREVIEW_LIMIT);
+      truncated = true;
+    }
     const open = sectionNumber === 0 ? " open" : "";
 
-    wrapped += `<details class="article-section"${open}><summary>${title}</summary><div class="article-section-body"><p class="section-context">${preview}${preview.length >= 150 ? "..." : ""}</p>${content}</div></details>`;
+    wrapped += `<details class="article-section"${open}><summary>${title}</summary><div class="article-section-body"><p class="section-context">${preview}${truncated ? "..." : ""}</p>${content}</div></details>`;
     sectionNumber += 1;
   }
 
