@@ -279,23 +279,31 @@ h1 {
 
 .section-card ul {
   list-style: none;
-  margin: 0;
-  padding: 0;
-  color: var(--muted);
+  margin: 14px 0 0;
+  padding: 14px 0 0;
+  border-top: 1px solid var(--line);
+  color: #6b7a8d;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .section-card li {
-  margin: 7px 0;
-  font-size: 15px;
+  font-size: 14px;
+  line-height: 1.4;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .section-card li::before {
-  content: "·";
-  margin-right: 8px;
-  color: #b0bac8;
-  font-size: 18px;
-  line-height: 1;
-  vertical-align: middle;
+  content: "";
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #c2cedd;
+  flex-shrink: 0;
 }
 
 .page-visual {
