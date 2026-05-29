@@ -1,9 +1,12 @@
 import { FormEvent } from "react";
 import { Send } from "lucide-react";
+import { useLang } from "../i18n";
 
 const recipient = "xolodkova_nv@dvfu.ru";
 
 export function QuestionForm() {
+  const { t } = useLang();
+
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -14,63 +17,60 @@ export function QuestionForm() {
     const message = String(data.get("message") || "").trim();
 
     const body = [
-      `Имя: ${name || "не указано"}`,
-      `Группа / программа: ${group || "не указано"}`,
-      `Контакт для ответа: ${contact || "не указан"}`,
+      `${t.form.emailBodyName}: ${name || t.form.notProvided}`,
+      `${t.form.emailBodyGroup}: ${group || t.form.notProvided}`,
+      `${t.form.emailBodyContact}: ${contact || t.form.notProvided2}`,
       "",
-      "Вопрос:",
-      message || "не указан",
+      `${t.form.emailBodyQuestionLabel}:`,
+      message || t.form.notProvided2,
     ].join("\n");
 
-    const subject = `Вопрос студента ШЭМ${topic ? `: ${topic}` : ""}`;
+    const subject = `${t.form.emailSubjectBase}${topic ? `: ${topic}` : ""}`;
     window.location.href = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   }
 
   return (
     <section className="question-section" id="ask-question" aria-labelledby="question-title">
       <div className="question-copy">
-        <p className="eyebrow">Нужна помощь</p>
-        <h2 id="question-title">Задать вопрос</h2>
-        <p>
-          Если непонятно, куда идти или кому писать, опишите ситуацию. Вопрос откроется в почтовом
-          клиенте, чтобы его можно было отправить ответственному сотруднику.
-        </p>
+        <p className="eyebrow">{t.form.eyebrow}</p>
+        <h2 id="question-title">{t.nav.ask}</h2>
+        <p>{t.form.desc}</p>
         <ul>
-          <li>укажите группу или программу;</li>
-          <li>напишите, что уже пробовали сделать;</li>
-          <li>добавьте контакт для ответа.</li>
+          <li>{t.form.hint1}</li>
+          <li>{t.form.hint2}</li>
+          <li>{t.form.hint3}</li>
         </ul>
       </div>
       <form className="question-form" onSubmit={submit}>
         <label>
-          Имя
-          <input name="name" type="text" placeholder="Например, Ли Вэй" />
+          {t.form.labelName}
+          <input name="name" type="text" placeholder={t.form.placeholderName} />
         </label>
         <label>
-          Группа / программа
-          <input name="group" type="text" placeholder="Например, Б1234 / менеджмент" />
+          {t.form.labelGroup}
+          <input name="group" type="text" placeholder={t.form.placeholderGroup} />
         </label>
         <label>
-          Контакт для ответа
-          <input name="contact" type="text" placeholder="Email, Telegram или телефон" />
+          {t.form.labelContact}
+          <input name="contact" type="text" placeholder={t.form.placeholderContact} />
         </label>
         <label>
-          Тема
-          <select name="topic" defaultValue="Учебный вопрос">
-            <option>Учебный вопрос</option>
-            <option>Документы или виза</option>
-            <option>Личный кабинет / сервисы</option>
-            <option>Общежитие</option>
-            <option>Другое</option>
+          {t.form.labelTopic}
+          <select name="topic" defaultValue={t.form.topic1}>
+            <option>{t.form.topic1}</option>
+            <option>{t.form.topic2}</option>
+            <option>{t.form.topic3}</option>
+            <option>{t.form.topic4}</option>
+            <option>{t.form.topic5}</option>
           </select>
         </label>
         <label className="question-message">
-          Сообщение
-          <textarea name="message" rows={5} placeholder="Коротко опишите проблему или вопрос" required />
+          {t.form.labelMessage}
+          <textarea name="message" rows={5} placeholder={t.form.placeholderMessage} required />
         </label>
         <button type="submit">
           <Send size={18} aria-hidden="true" />
-          Отправить вопрос
+          {t.form.submitButton}
         </button>
       </form>
     </section>

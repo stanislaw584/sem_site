@@ -23,14 +23,14 @@ export function Layout({ children }: LayoutProps) {
         <Link className="brand" to="/">
           {t.brand}
         </Link>
-        <nav className="top-nav" aria-label="Основная навигация">
+        <nav className="top-nav" aria-label={t.nav.ariaLabel}>
           <NavLink to="/">{t.nav.home}</NavLink>
           <NavLink to="/search">{t.nav.search}</NavLink>
           <a href="#contacts">{t.nav.contacts}</a>
           <NavLink className="header-question-link" to="/ask">
             {t.nav.ask}
           </NavLink>
-          <div className="language-switcher" aria-label="Язык / Language">
+          <div className="language-switcher" aria-label={t.langSwitcherLabel}>
             {LANGS.map(({ code, label }, i) => (
               <span key={code}>
                 {i > 0 && <span className="lang-sep">/</span>}

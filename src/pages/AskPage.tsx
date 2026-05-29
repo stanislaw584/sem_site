@@ -1,23 +1,22 @@
 import { ArrowLeft, Clock, Mail, MapPin, MessageCircleQuestion, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useLang } from "../i18n";
 
 export function AskPage() {
-  document.title = "Задать вопрос | SEM Student Guide";
+  const { t } = useLang();
+  document.title = t.ask.pageTitle;
 
   return (
     <section className="ask-page">
       <Link className="back-link" to="/">
         <ArrowLeft size={18} aria-hidden="true" />
-        На главную
+        {t.backToHome}
       </Link>
 
       <div className="page-heading">
-        <p className="eyebrow">Школа экономики и менеджмента ДВФУ</p>
-        <h1>Задать вопрос</h1>
-        <p>
-          Не нашли нужную информацию? Задайте вопрос онлайн — ответ придёт на вашу почту.
-          Или обратитесь напрямую в административный отдел ШЭМ.
-        </p>
+        <p className="eyebrow">{t.hero.eyebrow}</p>
+        <h1>{t.nav.ask}</h1>
+        <p>{t.ask.intro}</p>
       </div>
 
       <a
@@ -27,62 +26,59 @@ export function AskPage() {
         rel="noopener noreferrer"
       >
         <MessageCircleQuestion size={20} aria-hidden="true" />
-        Задать вопрос онлайн
+        {t.ask.ctaOnline}
       </a>
 
       <div className="ask-grid">
         <div className="ask-card">
           <h2>
             <Clock size={20} aria-hidden="true" />
-            График работы
+            {t.ask.scheduleTitle}
           </h2>
           <table className="ask-hours">
             <tbody>
               <tr>
-                <th>Понедельник — пятница</th>
-                <td>09:00 — 18:00</td>
+                <th>{t.ask.monFri}</th>
+                <td>{t.ask.workHours}</td>
               </tr>
               <tr>
-                <th>Обед</th>
-                <td>13:00 — 14:00</td>
+                <th>{t.ask.lunch}</th>
+                <td>{t.ask.lunchHours}</td>
               </tr>
               <tr>
-                <th>Суббота — воскресенье</th>
-                <td>выходной</td>
+                <th>{t.ask.satSun}</th>
+                <td>{t.ask.weekend}</td>
               </tr>
             </tbody>
           </table>
         </div>
 
         <div className="ask-card">
-          <h2>Административный отдел ШЭМ</h2>
+          <h2>{t.ask.adminTitle}</h2>
           <ul className="ask-contacts">
             <li>
               <MapPin size={16} aria-hidden="true" />
-              Корпус G, каб. G622–G624
+              {t.ask.adminAddress}
             </li>
             <li>
               <Phone size={16} aria-hidden="true" />
-              8 (423) 265 24 24, доб. 2200–2201
+              {t.ask.adminPhone}
             </li>
             <li>
               <Mail size={16} aria-hidden="true" />
               <a href="mailto:dubovik.ya@dvfu.ru">dubovik.ya@dvfu.ru</a>
-              <span className="ask-contact-note">Дубовик Яна Александровна (начальник)</span>
+              <span className="ask-contact-note">{t.ask.contact1Name}</span>
             </li>
             <li>
               <Mail size={16} aria-hidden="true" />
               <a href="mailto:xolodkova_nv@dvfu.ru">xolodkova_nv@dvfu.ru</a>
-              <span className="ask-contact-note">Холодкова Наталья Васильевна</span>
+              <span className="ask-contact-note">{t.ask.contact2Name}</span>
             </li>
           </ul>
         </div>
       </div>
 
-      <p className="ask-hint">
-        После заполнения формы ваш вопрос поступит в административный отдел ШЭМ.
-        Старайтесь описать ситуацию подробно — это ускорит ответ.
-      </p>
+      <p className="ask-hint">{t.ask.hint}</p>
     </section>
   );
 }

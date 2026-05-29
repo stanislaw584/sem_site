@@ -18,7 +18,7 @@ export function ArticlePage() {
     return <NotFoundPage />;
   }
 
-  document.title = `${article.title} | SEM Student Guide`;
+  document.title = `${article.title} | ${t.brand}`;
 
   return (
     <article className="article-page" data-pagefind-body>
@@ -38,7 +38,7 @@ export function ArticlePage() {
           // content is generated from project markdown files, not user input
           dangerouslySetInnerHTML={{ __html: article.html }}
         />
-        <aside className="article-aside" aria-label="Информация о странице">
+        <aside className="article-aside" aria-label={t.asideAriaLabel}>
           <h2>{t.page}</h2>
           {article.lastReviewed ? (
             <p>

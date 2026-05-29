@@ -49,7 +49,7 @@ export function HomePage() {
         <PageVisual slug="home" compact />
       </div>
 
-      <div className="section-grid" aria-label="Разделы сайта">
+      <div className="section-grid" aria-label={t.sectionsAriaLabel}>
         {t.sections.map((section, i) => {
           const Icon = SECTION_ICONS[i];
           const slug = SECTION_SLUGS[i];
