@@ -25,7 +25,7 @@ export function SearchBox({
   }
 
   return (
-    <form className="search-box" onSubmit={submit}>
+    <form className="search-box" onSubmit={submit} role="search">
       <label className="visually-hidden" htmlFor="site-search">
         {placeholder}
       </label>
@@ -35,6 +35,8 @@ export function SearchBox({
         value={query}
         onChange={(event) => setQuery(event.target.value)}
         placeholder={placeholder}
+        inputMode="search"
+        autoComplete="off"
       />
       <button type="submit">{searchButton}</button>
     </form>
