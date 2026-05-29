@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useLang, type Lang } from "../i18n";
+import { ScrollToTop } from "./ScrollToTop";
 
 type LayoutProps = {
   children: ReactNode;
@@ -17,6 +18,7 @@ export function Layout({ children }: LayoutProps) {
 
   return (
     <div className="app-shell">
+      <ScrollToTop />
       <header className="site-header">
         <Link className="brand" to="/">
           {t.brand}
