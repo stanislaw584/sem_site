@@ -179,7 +179,7 @@ export function getPublicArticles(lang: Lang): Article[] {
   return getArticles(lang).filter((a) => a.slug !== "index");
 }
 
-export function getArticle(slug: string, lang: Lang): Article | undefined {
+export function getArticle(slug: string, lang: Lang = "ru"): Article | undefined {
   const list = articlesByLang[lang];
   const found = list.find((a) => a.slug === slug);
   if (found) return found;
