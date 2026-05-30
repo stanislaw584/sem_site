@@ -130,7 +130,7 @@ const translations = {
       emailSubjectBase: "Вопрос студента ШЭМ",
     },
     visuals: {
-      home: { title: "SEM Guide", subtitle: "учеба / сервисы / помощь", facts: ["6 разделов", "поиск по сайту", "контакты отделов", "форма вопроса"], steps: ["выбрать свою ситуацию", "открыть нужный подпункт", "проверить контакт или сервис"] },
+      home: { title: "SEM Guide", subtitle: "учеба / сервисы / помощь", facts: ["7 разделов", "поиск по сайту", "контакты отделов", "форма вопроса"], steps: ["выбрать свою ситуацию", "открыть нужный подпункт", "проверить контакт или сервис"] },
       start: { title: "Старт", subtitle: "первые сервисы ДВФУ", facts: ["единый аккаунт", "почта ДВФУ", "личный кабинет", "зачетка"], steps: ["активировать учетную запись", "проверить почту и кабинет", "сохранить важные ссылки"] },
       study: { title: "Учеба", subtitle: "каждый день", facts: ["расписание", "учебный план", "рейтинг", "преподаватели"], steps: ["смотреть пары заранее", "понимать форму контроля", "следить за баллами"] },
       exams: { title: "Сессия", subtitle: "оценки и пересдачи", facts: ["зачетная неделя", "экзамены", "пересдачи", "апелляция"], steps: ["проверить рейтинг-план", "сверить оценку в кабинете", "сразу уточнить ошибку"] },
@@ -269,7 +269,7 @@ const translations = {
       emailSubjectBase: "SEM Student Question",
     },
     visuals: {
-      home: { title: "SEM Guide", subtitle: "study / services / help", facts: ["6 sections", "site search", "dept. contacts", "question form"], steps: ["choose your situation", "open the needed item", "check contact or service"] },
+      home: { title: "SEM Guide", subtitle: "study / services / help", facts: ["7 sections", "site search", "dept. contacts", "question form"], steps: ["choose your situation", "open the needed item", "check contact or service"] },
       start: { title: "Start", subtitle: "first FEFU services", facts: ["single account", "FEFU email", "student portal", "grade book"], steps: ["activate account", "check email and portal", "save important links"] },
       study: { title: "Studies", subtitle: "every day", facts: ["schedule", "study plan", "ranking", "teachers"], steps: ["check schedule in advance", "understand assessment form", "track scores"] },
       exams: { title: "Exams", subtitle: "grades and retakes", facts: ["credit week", "exams", "retakes", "appeal"], steps: ["check rating plan", "verify grade in portal", "clarify errors immediately"] },
@@ -408,7 +408,7 @@ const translations = {
       emailSubjectBase: "经管学院学生提问",
     },
     visuals: {
-      home: { title: "SEM 指南", subtitle: "学习 / 服务 / 帮助", facts: ["6个栏目", "站内搜索", "院系联系", "提问表单"], steps: ["选择您的情况", "打开所需子项", "查看联系方式或服务"] },
+      home: { title: "SEM 指南", subtitle: "学习 / 服务 / 帮助", facts: ["7个栏目", "站内搜索", "院系联系", "提问表单"], steps: ["选择您的情况", "打开所需子项", "查看联系方式或服务"] },
       start: { title: "开始", subtitle: "ДВФУ首要服务", facts: ["统一账户", "大学邮箱", "个人账户", "成绩册"], steps: ["激活账号", "检查邮箱和账户", "保存重要链接"] },
       study: { title: "学习", subtitle: "每日", facts: ["课程表", "教学计划", "排名", "教师"], steps: ["提前查看课程", "了解考核形式", "关注成绩"] },
       exams: { title: "考试", subtitle: "成绩与补考", facts: ["期末周", "考试", "补考", "申诉"], steps: ["查看评分计划", "在账户中核实成绩", "立即澄清错误"] },
