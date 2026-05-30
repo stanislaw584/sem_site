@@ -7,8 +7,8 @@ import { NotFoundPage } from "./NotFoundPage";
 
 export function ArticlePage() {
   const { slug = "" } = useParams();
-  const { t } = useLang();
-  const article = getArticle(slug);
+  const { t, lang } = useLang();
+  const article = getArticle(slug, lang);
 
   if (slug === "index") {
     return <Navigate to="/" replace />;
@@ -49,7 +49,7 @@ export function ArticlePage() {
             <>
               <h2>{t.relatedSections}</h2>
               {article.related.map((relSlug) => {
-                const related = getArticle(relSlug);
+                const related = getArticle(relSlug, lang);
                 return related ? (
                   <Link key={relSlug} to={`/${related.slug}`}>
                     {related.title}

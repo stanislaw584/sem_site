@@ -1,6 +1,19 @@
 import { marked } from "marked";
+import type { Lang } from "./i18n";
 
-const modules = import.meta.glob("../content/ru/*.md", {
+const modulesRu = import.meta.glob("../content/ru/*.md", {
+  query: "?raw",
+  import: "default",
+  eager: true,
+});
+
+const modulesEn = import.meta.glob("../content/en/*.md", {
+  query: "?raw",
+  import: "default",
+  eager: true,
+});
+
+const modulesZh = import.meta.glob("../content/zh/*.md", {
   query: "?raw",
   import: "default",
   eager: true,
@@ -98,13 +111,13 @@ function wrapSections(html: string) {
     const heading = sections[index];
     const content = sections[index + 1] ?? "";
     const title = heading.replace(/^<h2>|<\/h2>$/g, "");
-    const PREVIEW_LIMIT = 220;
+    const PREVIEW_LIMIT = 150;
     const rawText =
       content
         .replace(/<table[\s\S]*?<\/table>/g, " ")
         .replace(/<[^>]+>/g, " ")
         .replace(/\s+/g, " ")
-        .trim() || "Коротко о том, что важно сделать и где проверить информацию.";
+        .trim();
     let preview = rawText;
     let truncated = false;
     if (rawText.length > PREVIEW_LIMIT) {
@@ -114,56 +127,74 @@ function wrapSections(html: string) {
     }
     const open = sectionNumber === 0 ? " open" : "";
 
-    wrapped += `<details class="article-section"${open}><summary>${title}</summary><div class="article-section-body"><p class="section-context">${preview}${truncated ? "..." : ""}</p>${content}</div></details>`;
+    wrapped += `<details class="article-section"${open}><summary>${title}</summary><div class="article-section-body">${preview ? `<p class="section-context">${preview}${truncated ? "..." : ""}</p>` : ""}${content}</div></details>`;
     sectionNumber += 1;
   }
 
   return wrapped;
 }
 
-export const articles: Article[] = Object.entries(modules)
-  .map(([path, raw]) => {
-    const parsed = parseFrontmatter(String(raw));
-    const slug = fileToSlug(path);
-    const meta = parsed.data as ArticleMeta;
+function buildArticles(mods: Record<string, unknown>): Article[] {
+  return Object.entries(mods)
+    .map(([path, raw]) => {
+      const parsed = parseFrontmatter(String(raw));
+      const slug = fileToSlug(path);
+      const meta = parsed.data as ArticleMeta;
 
-    return {
-      ...meta,
-      id: meta.id || slug,
-      title: meta.title || slug,
-      summary: meta.summary || "",
-      slug,
-      html: wrapSections(marked.parse(parsed.content, { async: false }) as string),
-      body: stripMarkdown(parsed.content),
-    };
-  })
-  .sort((a, b) => {
-    if (a.slug === "index") return -1;
-    if (b.slug === "index") return 1;
+      return {
+        ...meta,
+        id: meta.id || slug,
+        title: meta.title || slug,
+        summary: meta.summary || "",
+        slug,
+        html: wrapSections(marked.parse(parsed.content, { async: false }) as string),
+        body: stripMarkdown(parsed.content),
+      };
+    })
+    .sort((a, b) => {
+      if (a.slug === "index") return -1;
+      if (b.slug === "index") return 1;
 
-    const byCategory =
-      categoryOrder.indexOf(a.category || "") -
-      categoryOrder.indexOf(b.category || "");
+      const byCategory =
+        categoryOrder.indexOf(a.category || "") -
+        categoryOrder.indexOf(b.category || "");
 
-    if (byCategory !== 0) return byCategory;
-    return a.title.localeCompare(b.title, "ru");
-  });
-
-export const publicArticles = articles.filter((article) => article.slug !== "index");
-
-export function getArticle(slug: string) {
-  return articles.find((article) => article.slug === slug);
+      if (byCategory !== 0) return byCategory;
+      return a.title.localeCompare(b.title);
+    });
 }
 
-export function searchLocal(query: string) {
-  const normalized = query.trim().toLocaleLowerCase("ru");
+const articlesByLang: Record<Lang, Article[]> = {
+  ru: buildArticles(modulesRu),
+  en: buildArticles(modulesEn),
+  zh: buildArticles(modulesZh),
+};
+
+export function getArticles(lang: Lang): Article[] {
+  const list = articlesByLang[lang];
+  return list.length > 0 ? list : articlesByLang.ru;
+}
+
+export function getPublicArticles(lang: Lang): Article[] {
+  return getArticles(lang).filter((a) => a.slug !== "index");
+}
+
+export function getArticle(slug: string, lang: Lang): Article | undefined {
+  const list = articlesByLang[lang];
+  const found = list.find((a) => a.slug === slug);
+  if (found) return found;
+  return articlesByLang.ru.find((a) => a.slug === slug);
+}
+
+export function searchLocal(query: string, lang: Lang) {
+  const normalized = query.trim().toLocaleLowerCase();
   if (!normalized) return [];
 
-  return publicArticles
+  return getPublicArticles(lang)
     .map((article) => {
-      const haystack = `${article.title} ${article.summary} ${article.body}`.toLocaleLowerCase("ru");
-      const titleHit = article.title.toLocaleLowerCase("ru").includes(normalized) ? 3 : 0;
-      const summaryHit = article.summary.toLocaleLowerCase("ru").includes(normalized) ? 2 : 0;
+      const haystack = `${article.title} ${article.summary} ${article.body}`.toLocaleLowerCase();
+      const titleHit = article.title.toLocaleLowerCase().includes(normalized) ? 3 : 0;
+      const summaryHit = article.summary.toLocaleLowerCase().includes(normalized) ? 2 : 0;
       const bodyHit = haystack.includes(normalized) ? 1 : 0;
       return { article, score: titleHit + summaryHit + bodyHit };
     })
@@ -171,3 +202,7 @@ export function searchLocal(query: string) {
     .sort((a, b) => b.score - a.score)
     .map((item) => item.article);
 }
+
+// Legacy exports for backward compatibility during migration
+export const articles = articlesByLang.ru;
+export const publicArticles = articles.filter((a) => a.slug !== "index");

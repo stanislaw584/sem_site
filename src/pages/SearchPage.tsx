@@ -41,13 +41,13 @@ function articleToResult(article: Article): SearchResult {
 export function SearchPage() {
   const [params] = useSearchParams();
   const query = params.get("q") || "";
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const [pagefindResults, setPagefindResults] = useState<SearchResult[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const fallbackResults = useMemo(
-    () => searchLocal(query).map(articleToResult),
-    [query],
+    () => searchLocal(query, lang).map(articleToResult),
+    [query, lang],
   );
 
   useEffect(() => {
